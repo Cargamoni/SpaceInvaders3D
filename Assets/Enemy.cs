@@ -5,6 +5,7 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     //Mustafa Ağabeeeeeeeeeeeeeeey
+    // Ferhat abiyi kandıralım, bize blender anlatsın
     public GameObject enemyProjectile;
     private float nextAttack;
     // Start is called before the first frame update
