@@ -458,8 +458,8 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 3b81c526050b56c4ebcb4e9e62592f60, type: 2}
   - {fileID: 2100000, guid: d66337400ea2e594f83db0939e01e623, type: 2}
   - {fileID: 2100000, guid: 1f8c1873d0c5c544f9e7824ee509ec95, type: 2}
-  width: 3
-  height: 2
+  width: 8
+  height: 4
   speed: 3
 --- !u!1 &463179506
 GameObject:

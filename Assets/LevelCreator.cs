@@ -32,20 +32,23 @@ public class LevelCreator : MonoBehaviour
         }
 
 
-        Vector3 origin = new Vector3(width / 2, 0, 0);
+        float marginX = 1.5f;
+        float marginY = 1.25f;
+        Vector3 origin = new Vector3((float)(width * marginX) / 2f, 0f, 0f);
         alienInstance = new GameObject[width, height];
-        for(int y= 0; y < height; y++)
+        for(int y = 0; y < height; y++)
         {
             GameObject prefab = alienPrefabs[Random.Range(0, alienPrefabs.Length)];
             Material material = alienMaterials[Random.Range(0, alienMaterials.Length)];
             prefab.GetComponent<MeshRenderer>().sharedMaterial = material;
             for (int x = 0; x < width; x++)
             {
-                Vector3 offset = new Vector3(x * 1.5f, y * 1.25f, 0.0f);
-                alienInstance[x,y]= Instantiate(prefab,
-                                            transform.position + offset - origin,
-                                            prefab.transform.rotation,
-                                            transform);
+                Vector3 offset = new Vector3(x * marginX, y * marginY, 0.0f);
+                alienInstance[x, y] = Instantiate(prefab,
+                    transform.position + offset - origin,
+                    prefab.transform.rotation,
+                    transform
+                );
             }
         }
 
