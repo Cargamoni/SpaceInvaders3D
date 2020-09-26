@@ -67,13 +67,13 @@ public class LevelCreator : MonoBehaviour
         //    }
         //}
 
-        //for (int x = -2; x <= 2; x++)
-        //{
-        //    Vector3 offset = new Vector3(x * 5, -height * 3.25f, 0.0f);
-        //    Instantiate(this.shieldPrefab,
-        //        this.transform.position + offset,
-        //        this.shieldPrefab.transform.rotation);
-        //}
+        for (int x = -2; x <= 2; x++)
+        {
+            Vector3 offset = new Vector3(x * 5, -height * 3.25f, 0.0f);
+            Instantiate(this.shieldPrefab,
+                this.transform.position + offset,
+                this.shieldPrefab.transform.rotation);
+        }
     }
 
     // Update is called once per frame
