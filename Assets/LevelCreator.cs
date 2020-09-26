@@ -10,6 +10,8 @@ public class LevelCreator : MonoBehaviour
     public GameObject shieldPrefab;
     static GameObject[] test;
 
+    public GameObject[,] alienInstance;
+
     public Text curScore;
     public Text bestScore;
 
@@ -28,29 +30,47 @@ public class LevelCreator : MonoBehaviour
         {
             alienPrefabs = Resources.LoadAll<GameObject>("Prefabs/Aliens");
         }
-        
-        for (int y = -height; y <= height; y++)
+
+
+        Vector3 origin = new Vector3(width / 2, 0, 0);
+        alienInstance = new GameObject[width, height];
+        for(int y= 0; y < height; y++)
         {
             GameObject prefab = alienPrefabs[Random.Range(0, alienPrefabs.Length)];
             Material material = alienMaterials[Random.Range(0, alienMaterials.Length)];
             prefab.GetComponent<MeshRenderer>().sharedMaterial = material;
-            for(int x = -width; x <= width; x++)
+            for (int x = 0; x < width; x++)
             {
                 Vector3 offset = new Vector3(x * 1.5f, y * 1.25f, 0.0f);
-                Instantiate(prefab, 
-                    this.transform.position + offset,
-                    prefab.transform.rotation, 
-                    this.transform);
+                alienInstance[width,height]= Instantiate(prefab,
+                                            transform.position + offset - origin,
+                                            prefab.transform.rotation,
+                                            transform);
             }
         }
 
-        for (int x = -1; x <= 1; x++)
-        {
-            Vector3 offset = new Vector3(x * 5, -height * 3.25f, 0.0f);
-            Instantiate(this.shieldPrefab,
-                this.transform.position + offset,
-                this.shieldPrefab.transform.rotation);
-        }
+        //for (int y = -height; y <= height; y++)
+        //{
+        //    GameObject prefab = alienPrefabs[Random.Range(0, alienPrefabs.Length)];
+        //    Material material = alienMaterials[Random.Range(0, alienMaterials.Length)];
+        //    prefab.GetComponent<MeshRenderer>().sharedMaterial = material;
+        //    for(int x = -width; x <= width; x++)
+        //    {
+        //        Vector3 offset = new Vector3(x * 1.5f, y * 1.25f, 0.0f);
+        //        Instantiate(prefab, 
+        //            this.transform.position + offset,
+        //            prefab.transform.rotation, 
+        //            this.transform);
+        //    }
+        //}
+
+        //for (int x = -2; x <= 2; x++)
+        //{
+        //    Vector3 offset = new Vector3(x * 5, -height * 3.25f, 0.0f);
+        //    Instantiate(this.shieldPrefab,
+        //        this.transform.position + offset,
+        //        this.shieldPrefab.transform.rotation);
+        //}
     }
 
     // Update is called once per frame

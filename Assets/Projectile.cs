@@ -6,10 +6,11 @@ public class Projectile : MonoBehaviour
 {
     [SerializeField]
     float speed = 0;
+    public int projectileDelete;
     // Start is called before the first frame update
     void Start()
     {
-        Destroy(gameObject, 3.1f);
+        Destroy(gameObject, projectileDelete);
     }
 
     // Update is called once per frame
