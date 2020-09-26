@@ -42,7 +42,7 @@ public class LevelCreator : MonoBehaviour
             for (int x = 0; x < width; x++)
             {
                 Vector3 offset = new Vector3(x * 1.5f, y * 1.25f, 0.0f);
-                alienInstance[width,height]= Instantiate(prefab,
+                alienInstance[x,y]= Instantiate(prefab,
                                             transform.position + offset - origin,
                                             prefab.transform.rotation,
                                             transform);
