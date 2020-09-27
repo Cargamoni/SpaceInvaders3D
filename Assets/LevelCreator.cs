@@ -10,14 +10,16 @@ public class LevelCreator : MonoBehaviour
     public GameObject shieldPrefab;
     static GameObject[] test;
 
-    public GameObject[,] alienInstance;
+    static public GameObject[,] alienInstance;
 
     public Text curScore;
     public Text bestScore;
 
     public Material[] alienMaterials;
 
-    public int width, height, speed;
+    public int width, height;
+    public float step;
+
 
     static public int score;
 
@@ -30,7 +32,6 @@ public class LevelCreator : MonoBehaviour
         {
             alienPrefabs = Resources.LoadAll<GameObject>("Prefabs/Aliens");
         }
-
 
         float marginX = 1.5f;
         float marginY = 1.25f;
@@ -69,9 +70,9 @@ public class LevelCreator : MonoBehaviour
 
         for (int x = -2; x <= 2; x++)
         {
-            Vector3 offset = new Vector3(x * 5, -height * 3.25f, 0.0f);
+            Vector3 offset = new Vector3(x * 5, -2.5f, 0.0f);
             Instantiate(this.shieldPrefab,
-                this.transform.position + offset,
+               offset,
                 this.shieldPrefab.transform.rotation);
         }
     }
@@ -82,11 +83,11 @@ public class LevelCreator : MonoBehaviour
         int count = 0;
         foreach (Transform child in transform)
         {
-            if ((child.position.x > HareketBerekettir.getmaxx && speed > 0 ) || 
-                (child.position.x < HareketBerekettir.getminx && speed < 0))
+            if ((child.position.x > HareketBerekettir.getmaxx && step > 0 ) || 
+                (child.position.x < HareketBerekettir.getminx && step < 0))
             {
                 transform.Translate(0.0f, -0.2f, 0.0f);
-                speed = -speed;
+                step = -step;
                 break;
             }
 
@@ -105,7 +106,7 @@ public class LevelCreator : MonoBehaviour
         if(count <=0 )
             SceneManager.LoadScene("GameOver");
 
-        Debug.Log(count);
+        //Debug.Log(count);
 
         curScore.text = score.ToString();
 
@@ -133,6 +134,7 @@ public class LevelCreator : MonoBehaviour
         //    }
         //}
 
-        transform.Translate(speed * Time.deltaTime, 0.0f, 0.0f);
+        if(Time.frameCount % 90 == 0)
+            transform.Translate(step, 0.0f, 0.0f);
     }
 }

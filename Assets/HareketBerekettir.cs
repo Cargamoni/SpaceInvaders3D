@@ -29,7 +29,6 @@ public class HareketBerekettir : MonoBehaviour
         getmaxx = rayRightPlane.GetPoint(enter).x;
 
     }
-
     
     void Update()
     {
