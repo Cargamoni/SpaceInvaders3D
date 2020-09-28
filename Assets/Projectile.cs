@@ -7,6 +7,7 @@ public class Projectile : MonoBehaviour
     [SerializeField]
     float speed = 0;
     public int projectileDelete;
+    public bool isPlayer;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,13 +22,13 @@ public class Projectile : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        //Debug.Log(collision.gameObject.name);
+        Debug.Log(collision.gameObject.name);
         switch(collision.gameObject.tag)
         {
             case "Enemy":
                 Destroy(collision.gameObject);
                 Destroy(gameObject);
-                LevelCreator.score += 100;
+                LevelCreator.score += Mathf.RoundToInt(100.0f * LevelCreator.level);
                 break;
             case "Shield":
                 if (collision.gameObject.transform.localScale.magnitude <= 0.25f)
@@ -35,6 +36,10 @@ public class Projectile : MonoBehaviour
                 else
                     collision.gameObject.transform.localScale *= 0.5f;
                 Destroy(gameObject);
+                break;
+            case "Player":
+                Destroy(gameObject);
+                LevelCreator.instance.die();
                 break;
             default:
                 break;

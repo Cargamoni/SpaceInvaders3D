@@ -29,11 +29,13 @@ public class HareketBerekettir : MonoBehaviour
         getmaxx = rayRightPlane.GetPoint(enter).x;
 
     }
+
+
     
     void Update()
     {
         float horizontalMovement = Input.GetAxisRaw("Horizontal");
-  
+
         Vector3 direction = new Vector3(horizontalMovement, 0.0f, 0.0f);
         transform.position += direction.normalized * speed * Time.deltaTime;
         transform.position = new Vector3(Mathf.Clamp(transform.position.x, getminx+1, getmaxx-1), transform.position.y, transform.position.z);
@@ -48,6 +50,7 @@ public class HareketBerekettir : MonoBehaviour
             Instantiate(this.projectilePrefab,
                 this.transform.position + Vector3.up * 1.5f,
                 this.projectilePrefab.transform.rotation);
+            LevelCreator.bizDostuz = false;
             cooldown = defCooldown;
         }
     }

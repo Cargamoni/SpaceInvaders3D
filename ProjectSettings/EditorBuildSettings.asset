@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/GameOver.unity
     guid: 60b2f2272706c114c908d986bb331ac3
+  - enabled: 1
+    path: Assets/Scenes/EasterEgg.unity
+    guid: 58b4c6c4513e8d44a919f66914a6c651
   m_configObjects: {}

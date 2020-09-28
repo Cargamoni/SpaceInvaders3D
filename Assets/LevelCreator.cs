@@ -8,24 +8,38 @@ public class LevelCreator : MonoBehaviour
 {
     static GameObject[] alienPrefabs;
     public GameObject shieldPrefab;
+    public GameObject turretPrefab;
     static GameObject[] test;
+    public GameObject enemyProjectilePrefab;
 
+    static public float level = 1;
+    
+    public static LevelCreator instance;
+
+    List<GameObject> availableAliens = new List<GameObject>();
+    
     static public GameObject[,] alienInstance;
 
     public Text curScore;
     public Text bestScore;
+    static public bool bizDostuz;
 
     public Material[] alienMaterials;
 
+    public int lives;
     public int width, height;
+    public RawImage[] hearts;
     public float step;
-
+    private float nextAttack;
 
     static public int score;
 
     // Start is called before the first frame update
     void Start()
     {
+        instance = this;
+        nextAttack = 0;
+        bizDostuz = true;
         bestScore.text = PlayerPrefs.GetInt("BestScore", 0).ToString();
 
         if (alienPrefabs == null)
@@ -75,7 +89,71 @@ public class LevelCreator : MonoBehaviour
                offset,
                 this.shieldPrefab.transform.rotation);
         }
+
     }
+
+    [ContextMenu("kill all")]
+    void killThemAll()
+    {
+        foreach (Transform child in transform)
+        {
+            Destroy(child.gameObject);
+        }
+    }
+
+    public void die() 
+    {
+
+        if(--lives == 0) {
+            SceneManager.LoadScene("GameOver");
+            return;
+        }
+
+        for (int i = 0; i < 3; i++) {
+            hearts[i].enabled = i < lives; 
+        }
+
+        turretPrefab.SetActive(false);
+        StartCoroutine(wait()); 
+
+    }
+
+    private IEnumerator wait()
+    {
+        Time.timeScale = 0;
+        yield return new WaitForSecondsRealtime(1);
+        Time.timeScale = 1;
+        turretPrefab.SetActive(true);
+    }
+
+    void attack() {
+
+        if (Time.time > nextAttack && !bizDostuz)
+        {
+            nextAttack = Time.time + Random.Range(1, 2);
+
+            //uygun enemy seç
+            availableAliens.Clear();
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+                    var alien = alienInstance[x, y];
+                    if (alien != null) {
+                        availableAliens.Add(alien);
+                        break;
+                    }
+                }
+            }
+
+            var enemy = availableAliens[Random.Range(0, availableAliens.Count)];
+
+            Instantiate(enemyProjectilePrefab,
+                enemy.transform.position + Vector3.down,
+                enemyProjectilePrefab.transform.rotation
+            );
+
+        }
+    }
+
 
     // Update is called once per frame
     void Update()
@@ -91,9 +169,12 @@ public class LevelCreator : MonoBehaviour
                 break;
             }
 
-            if(child.position.y < 0.5f)
+            if(child.position.y < 0.3f)
             {
-                SceneManager.LoadScene("GameOver");
+                if (bizDostuz)
+                    SceneManager.LoadScene("EasterEgg");
+                else
+                    SceneManager.LoadScene("GameOver");
             }
         }
 
@@ -103,38 +184,28 @@ public class LevelCreator : MonoBehaviour
             count++;
         }
 
-        if(count <=0 )
+        if (count <= 0 && lives > 0)
+        {
+            level *= 2.0f;
+            SceneManager.LoadScene("PlayGame");
+        }
+
+        else if (count <= 0 && lives == 0)
+        {
+            level = 1.0f;
             SceneManager.LoadScene("GameOver");
+        }
+            
 
         //Debug.Log(count);
 
         curScore.text = score.ToString();
 
-        //if(speed > 0)
-        //{
-        //    foreach (Transform child in transform)
-        //    {
-        //        if (child.position.x > HareketBerekettir.getmaxx)
-        //        {
-        //            speed = -speed;
-        //            break;
-        //        }
 
-        //    }
-        //}
-        //else
-        //{
-        //    foreach (Transform child in transform)
-        //    {
-        //        if (child.position.x < HareketBerekettir.getminx)
-        //        {
-        //            speed = -speed;
-        //            break;
-        //        }
-        //    }
-        //}
+        //if(Time.frameCount % 90 == 0)
+            transform.Translate(step * Time.deltaTime * level, 0.0f, 0.0f);
 
-        if(Time.frameCount % 90 == 0)
-            transform.Translate(step, 0.0f, 0.0f);
+        attack();
+
     }
 }
